@@ -17,22 +17,7 @@
           (download-button push-button
                            :data "Download"
                            :default-p t
-                           :callback-type :item
-                           :callback
-                           (lambda (item)
-                             (cond ((or (= 0 (length (text-input-pane-text tenhou-id-input)))
-                                        (= 0 (length (text-input-pane-text save-path-input))))
-                                    (display-message "Tenhou ID and save path are required."))
-                                   (t (setf (button-enabled item) nil)
-                                      (bt:make-thread
-                                       (lambda ()
-                                         (let ((*standard-output* (collector-pane-stream output-textbox)))
-                                           (unwind-protect
-                                               (format t "~%Downloaded ~a replay~:p~%"
-                                                       (length (download-replays
-                                                                (text-input-pane-text tenhou-id-input)
-                                                                (text-input-pane-text save-path-input))))
-                                             (setf (button-enabled item) t))))))))))
+                           :callback #'download))
   (:layouts (main-layout column-layout
                          '(tenhou-id-input
                            save-path-input
@@ -40,3 +25,19 @@
                            :separator
                            output-textbox)))
   (:default-initargs :title "Tenhou DL"))
+
+(defun download (data interface)
+  (with-slots (download-button tenhou-id-input save-path-input output-textbox) interface
+    (cond ((or (= 0 (length (text-input-pane-text tenhou-id-input)))
+               (= 0 (length (text-input-pane-text save-path-input))))
+           (display-message "Tenhou ID and save path are required."))
+          (t (setf (button-enabled download-button) nil)
+             (bt:make-thread
+              (lambda ()
+                (let ((*standard-output* (collector-pane-stream output-textbox)))
+                  (unwind-protect
+                      (format t "~%Downloaded ~a replay~:p~%"
+                              (length (download-replays
+                                       (text-input-pane-text tenhou-id-input)
+                                       (text-input-pane-text save-path-input))))
+                    (setf (button-enabled download-button) t)))))))))
