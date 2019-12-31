@@ -34,10 +34,11 @@
                         (bt:make-thread
                          (lambda ()
                            (let ((*standard-output* (collector-pane-stream output-textbox)))
-                             (format t "~%Downloaded ~a replay~:p~%"
-                                     (length (download-replays
-                                              (text-input-pane-text tenhou-id-input)
-                                              (text-input-pane-text save-path-input))))
-                             (setf (button-enabled item) t))))))))
+                             (unwind-protect
+                                 (format t "~%Downloaded ~a replay~:p~%"
+                                         (length (download-replays
+                                                  (text-input-pane-text tenhou-id-input)
+                                                  (text-input-pane-text save-path-input))))
+                               (setf (button-enabled item) t)))))))))
             :separator
             output-textbox)))))
