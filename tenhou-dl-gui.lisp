@@ -5,7 +5,14 @@
 
 (defun create-window ()
   (let ((tenhou-id-input (make-instance 'text-input-pane :title "Tenhou ID"))
-        (save-path-input (make-instance 'text-input-pane :title "Save Path"))
+        (save-path-input (make-instance 'text-input-pane
+                                        :title "Save Path"
+                                        :file-completion t
+                                        :directories-only t
+                                        :editing-callback
+                                        (lambda (pane type)
+                                          (when (eql type :start)
+                                            (text-input-pane-complete-text pane)))))
         (output-textbox (make-instance 'collector-pane :enabled nil)))
     (contain
      (make-instance
@@ -24,7 +31,7 @@
                           (= 0 (length (text-input-pane-text save-path-input))))
                       (display-message "Tenhou ID and save path are required."))
                      (t (setf (button-enabled item) nil)
-                        (bordeaux-threads:make-thread
+                        (bt:make-thread
                          (lambda ()
                            (let ((*standard-output* (collector-pane-stream output-textbox)))
                              (format t "~%Downloaded ~a replay~:p~%"

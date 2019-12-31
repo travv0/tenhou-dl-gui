@@ -4,5 +4,5 @@
   :license  "Specify license here"
   :version "0.0.1"
   :serial t
-  :depends-on (:tenhou-dl)
+  :depends-on (:tenhou-dl :bordeaux-threads)
   :components ((:file "tenhou-dl-gui")))
