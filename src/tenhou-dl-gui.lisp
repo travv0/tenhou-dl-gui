@@ -1,19 +1,25 @@
 (defpackage #:tenhou-dl-gui
-  (:use #:cl #:capi #:tenhou-dl))
+  (:use #:cl #:capi #:tenhou-dl)
+  (:export #:start))
 
 (in-package #:tenhou-dl-gui)
 
 (define-interface window ()
   ()
-  (:panes (tenhou-id-input text-input-pane :title "Tenhou ID")
-          (save-path-input text-input-pane :title "Save Path"
+  (:panes (tenhou-id-input text-input-pane
+                           :title "Tenhou ID"
+                           :visible-min-width '(:character 30))
+          (save-path-input text-input-pane
+                           :title "Save Path"
                            :file-completion t
                            :directories-only t
                            :editing-callback
                            (lambda (pane type)
                              (when (eql type :start)
                                (text-input-pane-complete-text pane))))
-          (output-textbox collector-pane :enabled nil)
+          (output-textbox collector-pane
+                          :enabled nil
+                          :visible-min-height '(:character 10))
           (download-button push-button
                            :data "Download"
                            :default-p t
@@ -36,8 +42,13 @@
               (lambda ()
                 (let ((*standard-output* (collector-pane-stream output-textbox)))
                   (unwind-protect
-                      (format t "~%Downloaded ~a replay~:p~%"
-                              (length (download-replays
-                                       (text-input-pane-text tenhou-id-input)
-                                       (text-input-pane-text save-path-input))))
+                       (format t "~%Downloaded ~a replay~:p~%"
+                               (length (download-replays
+                                        (text-input-pane-text tenhou-id-input)
+                                        (text-input-pane-text save-path-input))))
                     (setf (button-enabled download-button) t)))))))))
+
+(defun start ()
+  (setf lparallel:*kernel* (lparallel:make-kernel
+                            (cpus:get-number-of-processors)))
+  (display (make-instance 'window)))
