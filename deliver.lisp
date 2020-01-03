@@ -5,10 +5,9 @@
 (load-all-patches)
 
 ;;; Load the application:
-(load "/home/travis/code/lisp/tenhou-dl-gui/build.lisp")
+(load "~/common-lisp/tenhou-dl-gui/build.lisp")
 
-;; (compile-system 'tenhou-dl-gui :load t)
-
-(deliver 'tenhou-dl-gui:start "/home/travis/code/lisp/tenhou-dl-gui/tenhou-dl" 4
+(deliver 'tenhou-dl-gui:start "~/common-lisp/tenhou-dl-gui/tenhou-dl" 4
          :interface :capi
-         :startup-bitmap-file nil)
+         :startup-bitmap-file nil
+         :keep-top-level nil)

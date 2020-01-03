@@ -4,5 +4,6 @@
   :license  "Specify license here"
   :version "0.0.1"
   :serial t
-  :depends-on (:tenhou-dl :lparallel :cl-cpus)
+  :pathname "./src/"
+  :depends-on (:alexandria :tenhou-dl :lparallel :cl-cpus)
   :components ((:file "tenhou-dl-gui")))
