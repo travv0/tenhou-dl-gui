@@ -21,7 +21,7 @@
                              (when (eql type :start)
                                (text-input-pane-complete-text pane))))
           (output-textbox collector-pane
-                          :enabled nil
+                          :enabled :read-only
                           :visible-min-height '(:character 20))
           (download-button push-button
                            :data "Download"
