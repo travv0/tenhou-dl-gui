@@ -5,5 +5,5 @@
   :version "0.0.1"
   :serial t
   :pathname "./src/"
-  :depends-on (:alexandria :tenhou-dl :lparallel :cl-cpus)
+  :depends-on (:travv0.prelude :tenhou-dl :lparallel :cl-cpus)
   :components ((:file "tenhou-dl-gui")))

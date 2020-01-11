@@ -1,5 +1,5 @@
 (defpackage #:tenhou-dl-gui
-  (:use #:cl #:capi #:tenhou-dl)
+  (:use #:travv0.prelude #:capi #:tenhou-dl)
   (:export #:start))
 
 (in-package #:tenhou-dl-gui)
