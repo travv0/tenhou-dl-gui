@@ -59,7 +59,7 @@
                 (text-input-pane-text save-path-input)
                 (getf config :save-path)))))))
 
-(defun download (data interface)
+(desfun download (_data interface)
   (display-errors
     (with-slots (download-button tenhou-id-input save-path-input output-textbox) interface
       (cond ((or (= 0 (length (text-input-pane-text tenhou-id-input)))
